@@ -1,19 +1,15 @@
-"""Builds SageRank business card (front/back) -> PDF (print, with bleed) + PNG previews.
-Edit CONFIG, run: python3 build.py && node render.mjs
-"""
-import segno, io, re
-
+import segno
 CONFIG = dict(
     name="Veera Venkatesh",
-    title="FOUNDER",
-    email="veera@sagerank.io",            # TODO confirm
-    phone="+1 (000) 000-0000",            # TODO replace
+    title="FOUNDER & CEO",
+    email="veer@sagerank.io",
+    phone="+971 56 801 5996",
     web="sagerank.io",
-    addr1="Street Address, Suite #",      # TODO replace
-    addr2="City, State ZIP",              # TODO replace
+    addr=["CWEP8274, Compass Building", "Al Shohada Road", "Al Hamra Industrial Zone-FZ", "Ras Al Khaimah, United Arab Emirates"],
+    tagline="Rise with Authority, Secure with Dominance",
     qr_url="https://sagerank.io",
 )
-INK, SAGE, SAGE_LT, PAPER, MUTED = "#0A1511", "#8FB996", "#CFE6C8", "#F5F3EC", "#5C6B62"
+BLUE, INK, BG_DARK, MUTED_D = "#1d70d1", "#0B0F17", "#0B1018", "#9AA7B8"
 
 def qr_path(url, size):
     q = segno.make(url, error='h', micro=False)
@@ -30,48 +26,45 @@ def qr_path(url, size):
             else: x += 1
     return "".join(d)
 
-def mark(x, y, s, c1=SAGE, c2=SAGE_LT):
-    # three rising "leaf" bars: growth + rank
-    hs, w, g, r, k = [40, 68, 100], 24, 8, 24, 3
-    out = f'<g transform="translate({x} {y}) scale({s/100})">'
-    for i, h in enumerate(hs):
-        x0 = i * (w + g); y0 = 100 - h
-        d = (f"M{x0+r} {y0}H{x0+w-k}Q{x0+w} {y0} {x0+w} {y0+k}V{100-r}"
-             f"Q{x0+w} 100 {x0+w-r} 100H{x0+k}Q{x0} 100 {x0} {100-k}V{y0+r}Q{x0} {y0} {x0+r} {y0}Z")
-        col = [c1, "#B4D4B6", c2][i]
-        out += f'<path d="{d}" fill="{col}"/>'
-    return out + '</g>'
+def mark(x, y, h, dark="#000", light="#fff", blue=BLUE):
+    """Official SageRank mark (from logo/sagerank-logo.svg); bbox x166-834, y86-914. (stray green stroke dropped)"""
+    s = h / 828.0
+    return (f'<g transform="translate({x} {y}) scale({s}) translate(-166.343 -86.038)">'
+        f'<path d="M580.305,86.038l0,413.962l-413.962,183.983l0,-413.962l413.962,-183.983Z" fill="{blue}"/>'
+        f'<path d="M833.657,316.017l0,413.962l-413.962,183.983l0,-413.962l413.962,-183.983Z" fill="{blue}"/>'
+        f'<path d="M803.285,164.031l0,92.991l-474.707,210.981l0,-92.991l474.707,-210.981Z" fill="{dark}"/>'
+        f'<path d="M657.048,531.997l0,92.991l-474.707,210.981l0,-92.991l474.707,-210.981Z" fill="{dark}"/>'
+        f'<path d="M657.048,619.822l0,-89.575l-328.47,-145.987l0,89.575l328.47,145.987Z" fill="{light}"/></g>')
 
 B = 0.125  # bleed (in)
 W, H = 3.5 + 2*B, 2.0 + 2*B
 c = CONFIG
 
+MW = 0.8 * 667.3 / 828.0   # mark width at 0.8in tall
 front = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}in" height="{H}in">
-<defs><radialGradient id="glow" cx="50%" cy="48%" r="60%"><stop offset="0" stop-color="#16271E"/><stop offset="1" stop-color="{INK}"/></radialGradient></defs>
-<rect width="{W}" height="{H}" fill="url(#glow)"/>
-{mark(W/2-0.30, H/2-0.60, 0.60)}
-<text x="{W/2}" y="{H/2+0.42}" text-anchor="middle" font-family="Inter" font-size="0.215" letter-spacing="-0.004" fill="{PAPER}"><tspan font-weight="300">Sage</tspan><tspan font-weight="700">Rank</tspan></text>
-<text x="{W/2}" y="{H/2+0.66}" text-anchor="middle" font-family="Inter" font-weight="500" font-size="0.062" letter-spacing="0.032" fill="{SAGE}">SAGERANK.IO</text>
+<rect width="{W}" height="{H}" fill="#fff"/>
+{mark(W/2-1.01, H/2-0.515, 0.80)}
+<text x="{W/2-0.29}" y="{H/2-0.025}" font-family="Inter" font-size="0.30" letter-spacing="-0.008" fill="{INK}"><tspan font-weight="800">Sage</tspan><tspan font-weight="800" fill="{BLUE}">Rank</tspan></text>
+<text x="{W/2}" y="{H/2+0.50}" text-anchor="middle" font-family="Inter" font-weight="500" font-size="0.076" letter-spacing="0.004" fill="#3A4452">{c['tagline']}</text>
 </svg>'''
 
-qs = 0.88
-qx, qy = B + 3.5 - 0.32 - qs, B + 0.46
-lx = B + 0.32
+tile = 1.0; pad = 0.06; qs = tile - 2*pad
+tx, ty = B + 3.5 - 0.30 - tile, B + 0.36
+lx = B + 0.30
+addr = "".join(f'<text x="{lx}" y="{B+1.40+i*0.095:.3f}">{l}</text>' for i, l in enumerate(c['addr']))
 back = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}in" height="{H}in">
-<rect width="{W}" height="{H}" fill="{PAPER}"/>
-<rect x="0" y="0" width="{W}" height="0" fill="none"/>
-{mark(lx, B+0.32, 0.20, "#5E9470", "#9CC7A0")}
-<text x="{lx}" y="{B+0.86}" font-family="Inter" font-weight="700" font-size="0.145" letter-spacing="-0.003" fill="{INK}">{c['name']}</text>
-<text x="{lx}" y="{B+1.0}" font-family="Inter" font-weight="600" font-size="0.052" letter-spacing="0.03" fill="#5E9470">{c['title']}</text>
-<g font-family="Inter" font-size="0.066" fill="{INK}" font-weight="400">
-<text x="{lx}" y="{B+1.27}">{c['email']}</text>
-<text x="{lx}" y="{B+1.40}">{c['phone']}</text>
-<text x="{lx}" y="{B+1.53}" font-weight="600">{c['web']}</text>
-<text x="{lx}" y="{B+1.66}" fill="{MUTED}">{c['addr1']}</text>
-<text x="{lx}" y="{B+1.76}" fill="{MUTED}">{c['addr2']}</text>
+<rect width="{W}" height="{H}" fill="{BG_DARK}"/>
+{mark(lx, B+0.30, 0.25, dark="#fff", light=BG_DARK, blue="#3B8BEB")}
+<text x="{lx}" y="{B+0.80}" font-family="Inter" font-weight="700" font-size="0.15" letter-spacing="-0.003" fill="#fff">{c['name']}</text>
+<text x="{lx}" y="{B+0.93}" font-family="Inter" font-weight="600" font-size="0.052" letter-spacing="0.03" fill="#3B8BEB">{c['title']}</text>
+<g font-family="Inter" font-size="0.068" fill="#fff" font-weight="500">
+<text x="{lx}" y="{B+1.12}">{c['email']}</text>
+<text x="{lx}" y="{B+1.235}">{c['phone']}</text>
 </g>
-<g transform="translate({qx} {qy})"><path d="{qr_path(c['qr_url'], qs)}" fill="{INK}"/></g>
-<text x="{qx+qs/2}" y="{qy+qs+0.15}" text-anchor="middle" font-family="Inter" font-weight="600" font-size="0.048" letter-spacing="0.03" fill="{MUTED}">SCAN TO VISIT</text>
+<g font-family="Inter" font-size="0.057" fill="{MUTED_D}" font-weight="400">{addr}</g>
+<rect x="{tx}" y="{ty}" width="{tile}" height="{tile}" rx="0.07" fill="#fff"/>
+<g transform="translate({tx+pad} {ty+pad})"><path d="{qr_path(c['qr_url'], qs)}" fill="{INK}"/></g>
+<text x="{tx+tile/2}" y="{ty+tile+0.14}" text-anchor="middle" font-family="Inter" font-weight="600" font-size="0.048" letter-spacing="0.03" fill="{MUTED_D}">SAGERANK.IO</text>
 </svg>'''
 
 # vertical positions on back: keep everything >=0.3in from trim

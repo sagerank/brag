@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3.75 2.25" width="3.75in" height="2.25in">
+<defs><radialGradient id="glow" cx="50%" cy="48%" r="60%"><stop offset="0" stop-color="#16271E"/><stop offset="1" stop-color="#0A1511"/></radialGradient></defs>
+<rect width="3.75" height="2.25" fill="url(#glow)"/>
+<g transform="translate(1.575 0.525) scale(0.006)"><path d="M24 60H21Q24 60 24 63V76Q24 100 0 100H3Q0 100 0 97V84Q0 60 24 60Z" fill="#8FB996"/><path d="M56 32H53Q56 32 56 35V76Q56 100 32 100H35Q32 100 32 97V56Q32 32 56 32Z" fill="#B4D4B6"/><path d="M88 0H85Q88 0 88 3V76Q88 100 64 100H67Q64 100 64 97V24Q64 0 88 0Z" fill="#CFE6C8"/></g>
+<text x="1.875" y="1.545" text-anchor="middle" font-family="Inter" font-size="0.215" letter-spacing="-0.004" fill="#F5F3EC"><tspan font-weight="300">Sage</tspan><tspan font-weight="700">Rank</tspan></text>
+<text x="1.875" y="1.7850000000000001" text-anchor="middle" font-family="Inter" font-weight="500" font-size="0.062" letter-spacing="0.032" fill="#8FB996">SAGERANK.IO</text>
+</svg>

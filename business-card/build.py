@@ -40,31 +40,49 @@ B = 0.125  # bleed (in)
 W, H = 3.5 + 2*B, 2.0 + 2*B
 c = CONFIG
 
-MW = 0.8 * 667.3 / 828.0   # mark width at 0.8in tall
+import math
+T = math.degrees(math.atan(184/414))   # logo's own diagonal angle (~24 deg)
+GREY = "#5B6676"
 front = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}in" height="{H}in">
+<defs><clipPath id="cv"><rect width="{W}" height="{H}"/></clipPath></defs>
 <rect width="{W}" height="{H}" fill="#fff"/>
-{mark(W/2-1.01, H/2-0.515, 0.80)}
-<text x="{W/2-0.29}" y="{H/2-0.025}" font-family="Inter" font-size="0.30" letter-spacing="-0.008" fill="{INK}"><tspan font-weight="800">Sage</tspan><tspan font-weight="800" fill="{BLUE}">Rank</tspan></text>
-<text x="{W/2}" y="{H/2+0.50}" text-anchor="middle" font-family="Inter" font-weight="500" font-size="0.076" letter-spacing="0.004" fill="#3A4452">{c['tagline']}</text>
+<g clip-path="url(#cv)"><g transform="translate({W} {H-0.60}) rotate({-T})">
+  <rect x="-4" y="0" width="5" height="0.05" fill="{INK}"/>
+  <rect x="-4" y="0.11" width="5" height="3" fill="{BLUE}"/></g></g>
+{mark(W/2-1.01, H/2-0.60, 0.80)}
+<text x="{W/2-0.29}" y="{H/2-0.11}" font-family="Inter" font-size="0.30" letter-spacing="-0.008" font-weight="800" fill="{INK}">Sage<tspan fill="{BLUE}">Rank</tspan></text>
+<text x="{W/2-1.01}" y="{H/2+0.46}" font-family="Inter" font-weight="600" font-size="0.066" textLength="2.156" lengthAdjust="spacing" fill="{GREY}">Rise with Authority, Secure with Dominance</text>
 </svg>'''
 
-tile = 1.0; pad = 0.06; qs = tile - 2*pad
-tx, ty = B + 3.5 - 0.30 - tile, B + 0.36
+PX = B + 2.25                      # panel left edge
+tile = 0.86; pad = 0.055; qs = tile - 2*pad
+tx = PX + (B + 3.5 - PX - tile)/2 ; ty = B + 0.50
 lx = B + 0.30
-addr = "".join(f'<text x="{lx}" y="{B+1.40+i*0.095:.3f}">{l}</text>' for i, l in enumerate(c['addr']))
+vx = lx + 0.14
+def row(y, label, text, weight=500):
+    return (f'<text x="{lx}" y="{y}" font-family="Inter" font-weight="800" font-size="0.05" fill="{BLUE}">{label}</text>'
+            f'<text x="{vx}" y="{y}" font-family="Inter" font-weight="{weight}" font-size="0.066" fill="{INK}">{text}</text>')
+addr = ["CWEP8274, Compass Building, Al Shohada Road", "Al Hamra Industrial Zone-FZ", "Ras Al Khaimah, United Arab Emirates"]
+addr_svg = row(B+1.50, "A", addr[0], 400) + "".join(
+    f'<text x="{vx}" y="{B+1.50+0.095*(i+1):.3f}" font-family="Inter" font-size="0.066" fill="{INK}">{l}</text>' for i, l in enumerate(addr[1:]))
 back = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}in" height="{H}in">
-<rect width="{W}" height="{H}" fill="{BG_DARK}"/>
-{mark(lx, B+0.30, 0.25, dark="#fff", light=BG_DARK, blue="#3B8BEB")}
-<text x="{lx}" y="{B+0.80}" font-family="Inter" font-weight="700" font-size="0.15" letter-spacing="-0.003" fill="#fff">{c['name']}</text>
-<text x="{lx}" y="{B+0.93}" font-family="Inter" font-weight="600" font-size="0.052" letter-spacing="0.03" fill="#3B8BEB">{c['title']}</text>
-<g font-family="Inter" font-size="0.068" fill="#fff" font-weight="500">
-<text x="{lx}" y="{B+1.12}">{c['email']}</text>
-<text x="{lx}" y="{B+1.235}">{c['phone']}</text>
-</g>
-<g font-family="Inter" font-size="0.057" fill="{MUTED_D}" font-weight="400">{addr}</g>
-<rect x="{tx}" y="{ty}" width="{tile}" height="{tile}" rx="0.07" fill="#fff"/>
+<defs><clipPath id="pn"><rect x="{PX}" y="0" width="{W-PX}" height="{H}"/></clipPath></defs>
+<rect width="{W}" height="{H}" fill="#fff"/>
+<rect x="{PX}" y="0" width="{W-PX}" height="{H}" fill="{BLUE}"/>
+<g clip-path="url(#pn)"><g transform="translate({W} {H-0.45}) rotate({-T})">
+  <rect x="-4" y="0" width="5" height="0.04" fill="{INK}"/>
+  <rect x="-4" y="0.09" width="5" height="3" fill="#fff" opacity="0.22"/></g></g>
+{mark(lx, B+0.30, 0.30)}
+<text x="{lx}" y="{B+0.92}" font-family="Inter" font-weight="800" font-size="0.15" letter-spacing="-0.004" fill="{INK}">{c['name']}</text>
+<text x="{lx}" y="{B+1.05}" font-family="Inter" font-weight="700" font-size="0.052" letter-spacing="0.03" fill="{BLUE}">{c['title']}</text>
+<rect x="{lx}" y="{B+1.13}" width="0.28" height="0.012" fill="{INK}"/>
+{row(B+1.28, "E", c['email'], 600)}
+{row(B+1.39, "T", c['phone'], 600)}
+{addr_svg}
+<rect x="{tx}" y="{ty}" width="{tile}" height="{tile}" rx="0.06" fill="#fff"/>
 <g transform="translate({tx+pad} {ty+pad})"><path d="{qr_path(c['qr_url'], qs)}" fill="{INK}"/></g>
-<text x="{tx+tile/2}" y="{ty+tile+0.14}" text-anchor="middle" font-family="Inter" font-weight="600" font-size="0.048" letter-spacing="0.03" fill="{MUTED_D}">SAGERANK.IO</text>
+<text x="{tx+tile/2}" y="{ty+tile+0.16}" text-anchor="middle" font-family="Inter" font-weight="700" font-size="0.05" letter-spacing="0.03" fill="#fff">SAGERANK.IO</text>
+<text x="{tx+tile/2}" y="{ty+tile+0.255}" text-anchor="middle" font-family="Inter" font-weight="500" font-size="0.04" letter-spacing="0.03" fill="#DCE9F9">SCAN TO VISIT</text>
 </svg>'''
 
 # vertical positions on back: keep everything >=0.3in from trim

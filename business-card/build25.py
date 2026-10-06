@@ -3,7 +3,7 @@ import segno, math, json, os
 C = dict(name="Veera Venkatesh", title="FOUNDER & CEO", email="veer@sagerank.io", phone="+971 56 801 5996",
          addr=["CWEP8274, Compass Building", "Al Shohada Road, Al Hamra Industrial Zone-FZ", "Ras Al Khaimah, UAE"],
          tag="Rise with Authority, Secure with Dominance", tag1="Rise with Authority,", tag2="Secure with Dominance",
-         url="https://sagerank.io", web="SAGERANK.IO",
+         url="https://www.sagerank.io/veer", web="SAGERANK.IO",
          desc="AI Search Visibility &amp; Domain Security", desc1="AI Search Visibility", desc2="&amp; Domain Security",
          svc="AI Search (AEO · GEO) &amp; Domain Security")
 BLUE, INK, NAVY, LBLUE = "#1d70d1", "#0B0F17", "#0A1220", "#3B8BEB"

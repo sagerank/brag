@@ -10,14 +10,14 @@ L, R, TOP, BOT = B+0.3, W-B-0.3, B+0.3, H-B-0.3        # safe box (0.3in inside 
 ANG = math.degrees(math.atan(184/414))                  # logo's own diagonal
 
 THEMES = {
- "light":   dict(bg="#fff", fg=INK, sub="#5B6676", acc=BLUE, rank=BLUE, logo=(BLUE,"#000","#fff"), tile="#fff",
-                 stripe=INK, wedge=BLUE, panel=BLUE, plogo=("#fff",INK,BLUE), pstripe=INK, pwedge="#4E90DE", pfg="#fff", psub="#DCE9F9"),
- "blue":    dict(bg=BLUE, fg="#fff", sub="#D6E6FA", acc="#fff", rank=INK, logo=("#fff",INK,BLUE), tile="#fff",
-                 stripe=INK, wedge="#4A8DDB", panel=NAVY, plogo=(LBLUE,"#fff",NAVY), pstripe=LBLUE, pwedge="#16243A", pfg="#fff", psub="#9AA7B8"),
- "midnight":dict(bg=NAVY, fg="#fff", sub="#9AA7B8", acc=LBLUE, rank=LBLUE, logo=(LBLUE,"#fff",NAVY), tile="#fff",
-                 stripe="#fff", wedge=BLUE, panel=BLUE, plogo=("#fff",INK,BLUE), pstripe=INK, pwedge="#4E90DE", pfg="#fff", psub="#DCE9F9"),
- "mist":    dict(bg="#EAF1FB", fg=INK, sub="#556070", acc=BLUE, rank=BLUE, logo=(BLUE,"#000","#EAF1FB"), tile="#fff",
-                 stripe=INK, wedge=BLUE, panel=BLUE, plogo=("#fff",INK,BLUE), pstripe=INK, pwedge="#4E90DE", pfg="#fff", psub="#DCE9F9"),
+ "light":   dict(bg="#fff", fg=INK, sub="#5B6676", acc=BLUE, rank=BLUE, light=True, div=BLUE, band=BLUE, tile="#fff",
+                 stripe=INK, wedge=BLUE, panel=BLUE, pstripe=INK, pwedge="#4E90DE", pfg="#fff", psub="#DCE9F9"),
+ "blue":    dict(bg=BLUE, fg="#fff", sub="#D6E6FA", acc="#fff", rank=INK, div=INK, band=NAVY, tile="#fff",
+                 stripe=INK, wedge="#4A8DDB", panel=NAVY, pstripe=LBLUE, pwedge="#16243A", pfg="#fff", psub="#9AA7B8"),
+ "midnight":dict(bg=NAVY, fg="#fff", sub="#9AA7B8", acc=LBLUE, rank=LBLUE, div=BLUE, band=BLUE, tile="#fff",
+                 stripe="#fff", wedge=BLUE, panel=BLUE, pstripe=INK, pwedge="#4E90DE", pfg="#fff", psub="#DCE9F9"),
+ "mist":    dict(bg="#EAF1FB", fg=INK, sub="#556070", acc=BLUE, rank=BLUE, div=BLUE, band=BLUE, tile="#fff",
+                 stripe=INK, wedge=BLUE, panel=BLUE, pstripe=INK, pwedge="#4E90DE", pfg="#fff", psub="#DCE9F9"),
 }
 VARIANTS = [("A-light", "light", "light"), ("B-blue", "blue", "blue"), ("C-midnight", "midnight", "midnight"),
             ("D-mist", "mist", "mist"), ("E-duo", "midnight", "light")]   # duo: dark front, light back
@@ -78,56 +78,67 @@ def svg(inner, bg, preview=False):
     return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{vb}" width="{3.5 if preview else W}in" height="{2 if preview else H}in">'
             f'<defs><clipPath id="cv"><rect width="{W}" height="{H}"/></clipPath></defs><rect width="{W}" height="{H}" fill="{bg}"/>{inner}</svg>')
 
-# ---------------- 1 DIAGONAL (the one you liked) ----------------
+LOGO = (BLUE, "#000", "#fff")      # official colours - NEVER recoloured
+def mk(x, y, h, th, pad=0.06):
+    """official mark; on any non-white surface it sits on a white badge"""
+    bd = "" if th.get("light") else f'<rect x="{x-pad:.3f}" y="{y-pad:.3f}" width="{MW(h)+2*pad:.3f}" height="{h+2*pad:.3f}" rx="0.06" fill="#fff"/>'
+    return bd + mark(x, y, h, LOGO)
+def plate(x, y, w, h): return f'<rect x="{x:.3f}" y="{y:.3f}" width="{w}" height="{h}" rx="0.11" fill="#fff"/>'
+def wm(x, y, size, fg, rank, anchor="start"):
+    return (f'<text x="{x:.3f}" y="{y:.3f}" text-anchor="{anchor}" font-family="Inter" font-weight="800" font-size="{size}" '
+            f'letter-spacing="{-0.03*size:.4f}" fill="{fg}">Sage<tspan fill="{rank}">Rank</tspan></text>')
+
+# ---------------- 1 DIAGONAL ----------------
 def f1(th):
-    return (f'{corner("br", th["stripe"], th["wedge"])}{mark(W/2-1.01, H/2-0.60, 0.80, th["logo"])}'
-            + wordmark(W/2-0.29, H/2-0.11, 0.30, th)
-            + T(W/2-1.01, H/2+0.46, 0.066, C["tag"], th["sub"], 600, extra='textLength="2.156" lengthAdjust="spacing"'))
+    return (corner("br", th["stripe"], th["wedge"]) + plate(W/2-1.30, H/2-0.74, 2.60, 1.08)
+            + mark(W/2-1.01, H/2-0.60, 0.80, LOGO) + wm(W/2-0.29, H/2-0.115, 0.30, INK, BLUE)
+            + T(W/2-1.01, H/2+0.58, 0.066, C["tag"], th["sub"], 600, extra='textLength="2.156" lengthAdjust="spacing"'))
 def b1(th):
     PX = B+2.25; tile = 0.86; tx = PX+(W-B-PX-tile)/2
     s = f'<rect x="{PX}" width="{W-PX}" height="{H}" fill="{th["panel"]}"/><clipPath id="pn"><rect x="{PX}" width="{W-PX}" height="{H}"/></clipPath>'
     s += corner("br", th["pstripe"], th["pwedge"], 0.45, "pn")
-    s += mark(L, TOP, 0.30, th["logo"]) + T(L, B+0.92, 0.15, C["name"], th["fg"], 800, ls=-0.004) + T(L, B+1.05, 0.052, C["title"], th["acc"], 700, ls=0.03)
+    s += mk(L, TOP, 0.30, th) + T(L, B+0.92, 0.15, C["name"], th["fg"], 800, ls=-0.004) + T(L, B+1.05, 0.052, C["title"], th["acc"], 700, ls=0.03)
     s += f'<rect x="{L}" y="{B+1.13}" width="0.28" height="0.012" fill="{th["fg"]}"/>' + contacts(L, B+1.28, th)
     s += qr(tx, B+0.50, tile, 0.055, th, C["web"], th["pfg"]) + T(tx+tile/2, B+0.50+tile+0.255, 0.04, "SCAN TO VISIT", th["psub"], 500, "middle", 0.03)
     return s
 
-# ---------------- 2 SLANT PANEL ----------------
+# ---------------- 2 SLANT PANEL (logo lives on the white panel) ----------------
 SK = 0.28
 def f2(th):
-    px = B+1.25
-    s = f'<polygon points="0,0 {px+SK},0 {px},{H} 0,{H}" fill="{th["panel"]}"/>'
-    h = 0.95; s += mark((px+SK/2)/2-MW(h)/2+0.02, H/2-h/2, h, th["plogo"])
-    x0 = px+0.52
-    s += wordmark(x0, H/2-0.04, 0.27, th) + f'<rect x="{x0}" y="{H/2+0.06}" width="0.30" height="0.02" fill="{th["acc"]}"/>'
+    px = B+1.25; h = 0.95
+    s = f'<polygon points="{px+SK},0 {px+SK+0.10},0 {px+0.10},{H} {px},{H}" fill="{th["div"]}"/>'
+    s += f'<polygon points="0,0 {px+SK},0 {px},{H} 0,{H}" fill="#fff"/>'
+    s += mark((px+SK/2)/2-MW(h)/2+0.02, H/2-h/2, h, LOGO)
+    x0 = px+0.55
+    s += wm(x0, H/2-0.04, 0.27, th["fg"], th["rank"]) + f'<rect x="{x0}" y="{H/2+0.06}" width="0.30" height="0.02" fill="{th["acc"]}"/>'
     s += T(x0, H/2+0.27, 0.064, C["tag1"], th["sub"], 600) + T(x0, H/2+0.36, 0.064, C["tag2"], th["sub"], 600)
     return s
 def b2(th):
     L2 = B+0.55
-    s = f'<polygon points="0,0 {B+0.30},0 {B+0.18},{H} 0,{H}" fill="{th["panel"]}"/>'
-    s += mark(L2, TOP, 0.30, th["logo"]) + T(L2, B+0.98, 0.15, C["name"], th["fg"], 800, ls=-0.004) + T(L2, B+1.10, 0.052, C["title"], th["acc"], 700, ls=0.03)
+    s = f'<polygon points="0,0 {B+0.30},0 {B+0.18},{H} 0,{H}" fill="{th["band"]}"/>'
+    s += mk(L2, TOP, 0.30, th) + T(L2, B+0.98, 0.15, C["name"], th["fg"], 800, ls=-0.004) + T(L2, B+1.10, 0.052, C["title"], th["acc"], 700, ls=0.03)
     s += contacts(L2, B+1.34, th)
     s += qr(R-0.80, TOP, 0.80, 0.055, th, C["web"], th["fg"], 0.045)
     return s
 
 # ---------------- 3 MINIMAL MARK ----------------
 def f3(th):
-    h = 0.78
-    return (mark(W/2-MW(h)/2, H/2-0.70, h, th["logo"]) + wordmark(W/2, H/2+0.40, 0.21, th, "middle")
-            + T(W/2, H/2+0.575, 0.058, C["tag"], th["sub"], 600, "middle", 0.012))
+    h = 0.64
+    return (plate(W/2-1.0, 0.43, 2.0, 1.18) + mark(W/2-MW(h)/2, 0.54, h, LOGO) + wm(W/2, 1.45, 0.21, INK, BLUE, "middle")
+            + T(W/2, 1.75, 0.058, C["tag"], th["sub"], 600, "middle", 0.012))
 def b3(th):
-    s = mark(L, TOP, 0.30, th["logo"]) + qr(R-0.74, TOP, 0.74, 0.05, th)
+    s = mk(L, TOP, 0.30, th) + qr(R-0.74, TOP, 0.74, 0.05, th)
     s += T(L, 1.32, 0.17, C["name"], th["fg"], 800, ls=-0.005) + T(L, 1.43, 0.052, C["title"], th["acc"], 700, ls=0.03)
     s += row(L, 1.62, "E", C["email"], th, 600) + row(L, 1.73, "T", C["phone"], th, 600)
-    s += row(1.80, 1.62, "A", C["addr"][0].split(", Al Shohada")[0] + ",", th, 400, 0.058) if False else ""
     s += row(1.62, 1.585, "A", C["addr"][0], th, 400, 0.058) + T(1.76, 1.675, 0.058, C["addr"][1], th["fg"], 400) + T(1.76, 1.765, 0.058, C["addr"][2], th["fg"], 400)
     return s
 
-# ---------------- 4 BOLD CROP ----------------
+# ---------------- 4 BOLD CROP (logo cropped on a white panel) ----------------
 def f4(th):
     h = 2.4
-    s = mark(2.02, (H-h)/2, h, th["logo"])
-    s += wordmark(L, H/2-0.02, 0.30, th) + f'<rect x="{L}" y="{H/2+0.10}" width="0.30" height="0.02" fill="{th["acc"]}"/>'
+    s = f'<rect x="1.93" width="0.05" height="{H}" fill="{th["div"]}"/><rect x="1.98" width="{W-1.98}" height="{H}" fill="#fff"/>'
+    s += mark(2.12, (H-h)/2, h, LOGO)
+    s += wm(L, H/2-0.02, 0.30, th["fg"], th["rank"]) + f'<rect x="{L}" y="{H/2+0.10}" width="0.30" height="0.02" fill="{th["acc"]}"/>'
     s += T(L, H/2+0.32, 0.066, C["tag1"], th["sub"], 600) + T(L, H/2+0.41, 0.066, C["tag2"], th["sub"], 600)
     return s
 def b4(th):
@@ -144,15 +155,15 @@ def b4(th):
 
 # ---------------- 5 STRIPES (two corners) ----------------
 def f5(th):
-    h = 0.62
+    h = 0.56
     return (corner("tl", th["stripe"], th["wedge"], 0.50) + corner("br", th["stripe"], th["wedge"], 0.50)
-            + mark(W/2-MW(h)/2, 0.50, h, th["logo"]) + wordmark(W/2, 1.45, 0.25, th, "middle")
-            + T(W/2, 1.63, 0.058, C["tag"], th["sub"], 600, "middle", 0.012))
+            + plate(W/2-1.0, 0.40, 2.0, 1.12) + mark(W/2-MW(h)/2, 0.50, h, LOGO) + wm(W/2, 1.38, 0.24, INK, BLUE, "middle")
+            + T(W/2, 1.70, 0.058, C["tag"], th["sub"], 600, "middle", 0.012))
 def b5(th):
     tile = 0.86
     s = corner("tl", th["stripe"], th["wedge"], 0.48) + corner("br", th["stripe"], th["wedge"], 0.42)
     s += T(L, 0.98, 0.15, C["name"], th["fg"], 800, ls=-0.004) + T(L, 1.10, 0.052, C["title"], th["acc"], 700, ls=0.03) + contacts(L, 1.31, th)
-    s += qr(R-tile-0.05, 0.60, tile, 0.055, th, C["web"], th["fg"]) 
+    s += qr(R-tile-0.05, 0.60, tile, 0.055, th, C["web"], th["fg"])
     return s
 
 CONCEPTS = [("01-diagonal", f1, b1), ("02-slant-panel", f2, b2), ("03-minimal-mark", f3, b3), ("04-bold-crop", f4, b4), ("05-stripes", f5, b5)]

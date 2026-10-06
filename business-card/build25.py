@@ -1,7 +1,7 @@
 """25 SageRank card designs: 5 layouts x 5 colour treatments.  python3 build25.py && node render25.mjs"""
 import segno, math, json, os
 C = dict(name="Veera Venkatesh", title="FOUNDER & CEO", email="veer@sagerank.io", phone="+971 56 801 5996",
-         addr=["CWEP8274, Compass Building, Al Shohada Road", "Al Hamra Industrial Zone-FZ", "Ras Al Khaimah, United Arab Emirates"],
+         addr=["CWEP8274, Compass Building", "Al Shohada Road, Al Hamra Industrial Zone-FZ", "Ras Al Khaimah, UAE"],
          tag="Rise with Authority, Secure with Dominance", tag1="Rise with Authority,", tag2="Secure with Dominance",
          url="https://sagerank.io", web="SAGERANK.IO",
          desc="AI Search Visibility &amp; Domain Security", desc1="AI Search Visibility", desc2="&amp; Domain Security",

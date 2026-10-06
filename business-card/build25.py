@@ -3,7 +3,9 @@ import segno, math, json, os
 C = dict(name="Veera Venkatesh", title="FOUNDER & CEO", email="veer@sagerank.io", phone="+971 56 801 5996",
          addr=["CWEP8274, Compass Building, Al Shohada Road", "Al Hamra Industrial Zone-FZ", "Ras Al Khaimah, United Arab Emirates"],
          tag="Rise with Authority, Secure with Dominance", tag1="Rise with Authority,", tag2="Secure with Dominance",
-         url="https://sagerank.io", web="SAGERANK.IO")
+         url="https://sagerank.io", web="SAGERANK.IO",
+         desc="AI Search Visibility &amp; Domain Security", desc1="AI Search Visibility", desc2="&amp; Domain Security",
+         svc="AI Search (AEO · GEO) &amp; Domain Security")
 BLUE, INK, NAVY, LBLUE = "#1d70d1", "#0B0F17", "#0A1220", "#3B8BEB"
 B = 0.125; W, H = 3.5 + 2*B, 2.0 + 2*B
 L, R, TOP, BOT = B+0.3, W-B-0.3, B+0.3, H-B-0.3        # safe box (0.3in inside trim)
@@ -90,15 +92,16 @@ def wm(x, y, size, fg, rank, anchor="start"):
 
 # ---------------- 1 DIAGONAL ----------------
 def f1(th):
-    return (corner("br", th["stripe"], th["wedge"]) + plate(W/2-1.30, H/2-0.74, 2.60, 1.08)
-            + mark(W/2-1.01, H/2-0.60, 0.80, LOGO) + wm(W/2-0.29, H/2-0.115, 0.30, INK, BLUE)
-            + T(W/2-1.01, H/2+0.58, 0.066, C["tag"], th["sub"], 600, extra='textLength="2.156" lengthAdjust="spacing"'))
+    return (corner("br", th["stripe"], th["wedge"]) + plate(W/2-1.30, H/2-0.80, 2.60, 1.08)
+            + mark(W/2-1.01, H/2-0.66, 0.80, LOGO) + wm(W/2-0.29, H/2-0.175, 0.30, INK, BLUE)
+            + T(W/2, H/2+0.50, 0.082, C["desc"], th["fg"], 700, "middle", 0.004)
+            + T(W/2, H/2+0.655, 0.058, C["tag"], th["sub"], 600, "middle", 0.012))
 def b1(th):
     PX = B+2.25; tile = 0.86; tx = PX+(W-B-PX-tile)/2
     s = f'<rect x="{PX}" width="{W-PX}" height="{H}" fill="{th["panel"]}"/><clipPath id="pn"><rect x="{PX}" width="{W-PX}" height="{H}"/></clipPath>'
     s += corner("br", th["pstripe"], th["pwedge"], 0.45, "pn")
-    s += mk(L, TOP, 0.30, th) + T(L, B+0.92, 0.15, C["name"], th["fg"], 800, ls=-0.004) + T(L, B+1.05, 0.052, C["title"], th["acc"], 700, ls=0.03)
-    s += f'<rect x="{L}" y="{B+1.13}" width="0.28" height="0.012" fill="{th["fg"]}"/>' + contacts(L, B+1.28, th)
+    s += mk(L, TOP, 0.26, th) + T(L, B+0.86, 0.15, C["name"], th["fg"], 800, ls=-0.004) + T(L, B+0.98, 0.052, C["title"], th["acc"], 700, ls=0.03)
+    s += T(L, B+1.11, 0.060, C["svc"], th["fg"], 700) + contacts(L, B+1.27, th)
     s += qr(tx, B+0.50, tile, 0.055, th, C["web"], th["pfg"]) + T(tx+tile/2, B+0.50+tile+0.255, 0.04, "SCAN TO VISIT", th["psub"], 500, "middle", 0.03)
     return s
 
@@ -110,14 +113,15 @@ def f2(th):
     s += f'<polygon points="0,0 {px+SK},0 {px},{H} 0,{H}" fill="#fff"/>'
     s += mark((px+SK/2)/2-MW(h)/2+0.02, H/2-h/2, h, LOGO)
     x0 = px+0.55
-    s += wm(x0, H/2-0.04, 0.27, th["fg"], th["rank"]) + f'<rect x="{x0}" y="{H/2+0.06}" width="0.30" height="0.02" fill="{th["acc"]}"/>'
-    s += T(x0, H/2+0.27, 0.064, C["tag1"], th["sub"], 600) + T(x0, H/2+0.36, 0.064, C["tag2"], th["sub"], 600)
+    s += wm(x0, H/2-0.17, 0.27, th["fg"], th["rank"]) + f'<rect x="{x0}" y="{H/2-0.07}" width="0.30" height="0.02" fill="{th["acc"]}"/>'
+    s += T(x0, H/2+0.13, 0.072, C["desc1"], th["fg"], 700) + T(x0, H/2+0.225, 0.072, C["desc2"], th["fg"], 700)
+    s += T(x0, H/2+0.43, 0.056, C["tag1"], th["sub"], 600) + T(x0, H/2+0.50, 0.056, C["tag2"], th["sub"], 600)
     return s
 def b2(th):
     L2 = B+0.55
     s = f'<polygon points="0,0 {B+0.30},0 {B+0.18},{H} 0,{H}" fill="{th["band"]}"/>'
-    s += mk(L2, TOP, 0.30, th) + T(L2, B+0.98, 0.15, C["name"], th["fg"], 800, ls=-0.004) + T(L2, B+1.10, 0.052, C["title"], th["acc"], 700, ls=0.03)
-    s += contacts(L2, B+1.34, th)
+    s += mk(L2, TOP, 0.26, th) + T(L2, B+0.86, 0.15, C["name"], th["fg"], 800, ls=-0.004) + T(L2, B+0.98, 0.052, C["title"], th["acc"], 700, ls=0.03)
+    s += T(L2, B+1.11, 0.060, C["svc"], th["fg"], 700) + contacts(L2, B+1.27, th)
     s += qr(R-0.80, TOP, 0.80, 0.055, th, C["web"], th["fg"], 0.045)
     return s
 

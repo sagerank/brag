@@ -7,7 +7,7 @@ Colour ........... RGB. Brand blue #1D70D1, black, white. Ask the printer to con
 Text ............. converted to outlines in the SVG/PDF - no fonts needed
 QR code .......... https://www.sagerank.io/veer
 
-pdf/SageRank-card_PRINT_front+back_bleed.pdf  <- send THIS to the printer (page 1 front, page 2 back; TrimBox/BleedBox set)
+pdf/SageRank-card_PRINT_front-and-back_bleed.pdf  <- send THIS to the printer (page 1 front, page 2 back; TrimBox/BleedBox set)
 pdf/SageRank-card_front_bleed.pdf, ..._back_bleed.pdf  <- single sides
 svg/*_bleed.svg  <- editable vector, with bleed      svg/*_trim.svg  <- vector at final size, no bleed
 png/*_bleed_600dpi.png  <- 2250x1350 px, with bleed   png/*_trim_600dpi.png  <- 2100x1200 px, final size, for web/email/preview

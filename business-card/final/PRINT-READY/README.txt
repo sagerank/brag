@@ -6,6 +6,7 @@ Safe area ........ all text/QR/logo are >= 0.3 in inside the trim edge (rounded 
 Colour ........... RGB. Brand blue #1D70D1, black, white. Ask the printer to convert to CMYK and send a proof.
 Text ............. converted to outlines in the SVG/PDF - no fonts needed
 QR code .......... https://www.sagerank.io/veer
+Legal entity ..... SageRank Software Solutions FZ-LLC (RAKEZ Reg. No. 0000004092036 - not printed on the card)
 
 pdf/SageRank-card_PRINT_front-and-back_bleed.pdf  <- send THIS to the printer (page 1 front, page 2 back; TrimBox/BleedBox set)
 pdf/SageRank-card_front_bleed.pdf, ..._back_bleed.pdf  <- single sides

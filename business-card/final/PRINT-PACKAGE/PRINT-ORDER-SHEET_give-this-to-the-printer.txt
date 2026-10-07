@@ -1,0 +1,49 @@
+SAGERANK BUSINESS CARD - PRINT ORDER SHEET
+Customer: Veera Venkatesh, SageRank Software Solutions FZ-LLC
+Phone: +971 56 801 5996   Email: veer@sagerank.io
+
+THE JOB
+Double-sided business card, full colour on both sides.
+Final size 3.5 x 2 in = 88.9 x 50.8 mm, landscape.
+Print the file "1_SEND-THIS-TO-PRINTER_SageRank-card_with-bleed.pdf" at 100% (no scaling, no "fit to page"). Cut on the trim line.
+Page 1 = FRONT, page 2 = BACK.
+
+EXACT SIZES
+- Final card (TRIM / cut line): 3.5 x 2.0 in = 88.9 x 50.8 mm = 252 x 144 pt
+- PDF page size (with bleed):   3.75 x 2.25 in = 95.25 x 57.15 mm = 270 x 162 pt
+- Bleed, each of 4 sides:       0.125 in = 3.175 mm = 9 pt
+- Safe margin (text, logo, QR): at least 0.30 in = 7.6 mm inside the cut line
+- Rounded corners (optional):   3 mm radius
+The PDF has TrimBox and BleedBox set.
+
+SIMPLE WORDS
+- Trim = final card size, where you cut.
+- Bleed = colour that runs past the cut line so a cutting error never shows a white edge. The blue bar touches the edge on purpose; the extra 3.175 mm is cut away.
+- Safe area = nothing important is closer to the edge than 7.6 mm.
+
+PRINTING THE TWO SIDES
+- Front has a blue bar on the LEFT edge. Back has a blue bar on the RIGHT edge.
+- Turn the printed card sideways like a book page (flip on the SHORT edge). Both bars meet at the same physical edge and the back reads upright.
+- Do NOT flip top-to-bottom: the back would be upside down.
+
+COLOUR
+- 4/4 full colour. Artwork is RGB: please convert to CMYK with your standard profile and send a proof.
+- Brand blue: HEX #1D70D1 (RGB 29/112/209). Approx CMYK 87/55/0/0 - a guide only, match the hex on the proof.
+- Logo bars are pure black. Text is very dark navy (#0B0F17): please print it K-only black, not a 4-colour mix.
+
+FILES / FONTS
+- All text is outlined. No fonts needed. Logo and QR are vector.
+- Do not re-draw, resize or re-colour the logo. Do not add a border.
+- QR code opens https://www.sagerank.io/veer - please scan the printed proof.
+
+PAPER / FINISH (suggestion - open to your advice)
+350 gsm matte card, matte lamination or uncoated. Avoid gloss over the small text. No foil, spot UV, embossing or folds.
+Quantity: ________   Rounded corners: yes / no
+
+BEFORE PRINTING, PLEASE CHECK
+Page size 3.75 x 2.25 in, 2 pages, 100% scale | cut on the trim line | blue bar reaches the edge | QR scans | send me a PDF proof and, if possible, one printed sample before the full run.
+
+OTHER FILES IN THIS PACKAGE
+2_ALTERNATIVE ... with-crop-marks.pdf  - same art with crop marks, page 4.25 x 2.75 in
+3_ALTERNATIVE ... trim-size-no-bleed.pdf - 3.5 x 2 in, only if you cannot use bleed
+source-files/svg and source-files/png - vector and 600 dpi images

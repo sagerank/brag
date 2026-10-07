@@ -1,0 +1,28 @@
+READ ME FIRST (for you, Veera)
+
+WHAT TO SEND THE PRINTER
+1. PRINT-ORDER-SHEET_give-this-to-the-printer.pdf   (or paste the .txt into WhatsApp / email)
+2. 1_SEND-THIS-TO-PRINTER_SageRank-card_with-bleed.pdf   <- the actual card, 2 pages: front, back
+
+ONLY IF THE PRINTER ASKS
+- "Do you have crop marks?"  -> send file 2_ALTERNATIVE_..._with-crop-marks.pdf
+- "Send it without bleed"    -> send file 3_ALTERNATIVE_..._trim-size-no-bleed.pdf (less safe: tell them it has no bleed)
+- "Send an image"            -> source-files/png (600 dpi) - the PDF is always better
+- "Send the vector / source" -> source-files/svg (text is outlined)
+
+THE WORDS IN ONE MINUTE
+Trim  = the final card size after cutting (3.5 x 2 in).
+Bleed = a 0.125 in extra band of colour around the card that is cut off. It stops white edges. You do not need to do anything.
+Safe  = text and the QR are kept 0.3 in away from the edge, so rounded corners or a slightly off cut never damage them.
+See layout-guide_trim-bleed-safe.png for a picture.
+
+BEFORE YOU APPROVE THE PRINT RUN
+1. Ask for a PDF proof, and if possible one real printed sample.
+2. Scan the QR code from the sample with your phone. Open https://www.sagerank.io/veer first to make sure the page works.
+3. Check that the blue bar on the front and the blue bar on the back meet when you turn the card sideways.
+4. Check the blue looks like your logo blue, and that the small text is sharp.
+
+THINGS I COULD NOT DO FOR YOU
+- The files are RGB. I could not make a reliable CMYK file here, so the printer converts it. The order sheet tells them how.
+- I did not choose a printer, paper or quantity. The paper on the order sheet is only a suggestion.
+- Your card is US size 3.5 x 2 in. If your printer's standard is 90 x 55 mm, tell me and I will re-make the files.

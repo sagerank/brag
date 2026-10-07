@@ -1,0 +1,12 @@
+import { chromium } from '/opt/node-tools/node_modules/playwright/index.mjs';
+import path from 'path';
+const D = '_pkg', P = 'final/PRINT-PACKAGE';
+const b = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' });
+const go = async (page, f) => page.goto('file://' + path.resolve(`${D}/${f}`));
+let p = await b.newPage({ viewport: { width: 2000, height: 800 }, deviceScaleFactor: 1 });
+await go(p, 'guide.html'); await p.screenshot({ path: `${D}/guide.png`, fullPage: true }); await p.screenshot({ path: `${P}/layout-guide_trim-bleed-safe.png`, fullPage: true });
+p = await b.newPage();
+await go(p, 'crop.html'); await p.pdf({ path: `${D}/crop.pdf`, width: '4.25in', height: '2.75in', printBackground: true });
+await go(p, 'trim.html'); await p.pdf({ path: `${D}/trim.pdf`, width: '3.5in', height: '2in', printBackground: true });
+await go(p, 'ordersheet.html'); await p.pdf({ path: `${P}/PRINT-ORDER-SHEET_give-this-to-the-printer.pdf`, format: 'A4', printBackground: true });
+await b.close();
